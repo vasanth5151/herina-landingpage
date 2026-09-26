@@ -79,7 +79,10 @@ setInterval(() => {
   if (cd) cd.textContent = m + ':' + s;
 }, 1000);
 
-// ---------- Booking form (demo submit) ----------
+// ---------- Booking form (Google Sheet via Apps Script) ----------
+// Paste the Web App URL you get after deploying the Apps Script (see appscript.gs).
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyoTDalBB90Z0DwVv9p9Qkifdr48EftH2-SJR5k4rJPo63B3Po5Au9a32wloDAy5H13/exec';
+
 const form = document.getElementById('bookingForm');
 if (form) {
   form.addEventListener('submit', e => {
@@ -87,6 +90,7 @@ if (form) {
     const name = form.name.value.trim();
     const phone = form.phone.value.trim();
     const condition = form.condition.value;
+    const time = form.time.value;
 
     if (!name || !phone || !condition) {
       alert('Please fill your name, phone number and condition so the team can call you.');
@@ -97,9 +101,29 @@ if (form) {
       return;
     }
 
-    // TODO: replace with your real endpoint / Google Form / WhatsApp API
-    document.getElementById('formSuccess').hidden = false;
-    form.reset();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    fetch(SHEET_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify({ name, phone, condition, time }),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!data || data.result !== 'success') throw new Error('Bad response');
+        document.getElementById('formSuccess').hidden = false;
+        form.reset();
+      })
+      .catch(() => {
+        alert('Something went wrong sending your request. Please call or WhatsApp us instead.');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      });
   });
 }
 
