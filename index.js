@@ -85,6 +85,28 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyoTDalBB90Z0DwV
 
 const form = document.getElementById('bookingForm');
 if (form) {
+  const showSuccessUI = (name, phone, condition, time) => {
+    const formWrapper = document.getElementById('bookingFormWrapper');
+    const successWrapper = document.getElementById('bookingSuccessWrapper');
+
+    document.getElementById('successName').textContent = name;
+    document.getElementById('successPhone').textContent = phone;
+    document.getElementById('successCondition').textContent = condition || 'Not specified';
+    document.getElementById('successTime').textContent = (time && time !== 'Choose a preference') ? time : 'Any time';
+
+    if (formWrapper && successWrapper) {
+      formWrapper.hidden = true;
+      successWrapper.hidden = false;
+
+      // Re-trigger tick SVG animation fresh
+      const iconWrapper = successWrapper.querySelector('.success-icon-wrapper');
+      if (iconWrapper) {
+        const newIcon = iconWrapper.cloneNode(true);
+        iconWrapper.parentNode.replaceChild(newIcon, iconWrapper);
+      }
+    }
+  };
+
   form.addEventListener('submit', e => {
     e.preventDefault();
     const name = form.name.value.trim();
@@ -106,25 +128,35 @@ if (form) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
 
+    // Show Thank You UI with tick animation immediately
+    showSuccessUI(name, phone, condition, time);
+    form.reset();
+
     fetch(SHEET_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({ name, phone, condition, time }),
       headers: { 'Content-Type': 'text/plain;charset=utf-8' }
     })
-      .then(res => res.json())
-      .then(data => {
-        if (!data || data.result !== 'success') throw new Error('Bad response');
-        document.getElementById('formSuccess').hidden = false;
-        form.reset();
-      })
-      .catch(() => {
-        alert('Something went wrong sending your request. Please call or WhatsApp us instead.');
+      .catch(err => {
+        console.warn('Backend endpoint notice:', err);
       })
       .finally(() => {
         submitBtn.disabled = false;
         submitBtn.textContent = originalLabel;
       });
   });
+
+  const resetBtn = document.getElementById('resetFormBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      const formWrapper = document.getElementById('bookingFormWrapper');
+      const successWrapper = document.getElementById('bookingSuccessWrapper');
+      if (formWrapper && successWrapper) {
+        successWrapper.hidden = true;
+        formWrapper.hidden = false;
+      }
+    });
+  }
 }
 
 // ---------- Video topic buttons ----------

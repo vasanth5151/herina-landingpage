@@ -439,43 +439,79 @@
           </ul>
         </div>
       </div>
-      <div class="booking-card reveal">
-        <h3>Request your slot</h3>
-        <p class="form-sub">Have less than a minute.</p>
-        <form id="bookingForm" novalidate>
-          <div class="form-success" id="formSuccess" hidden>✓ Request received. The team will call you shortly to
-            confirm your slot.</div>
-          <label>Full name
-            <input type="text" name="name" placeholder="Your name" required>
-          </label>
-          <label>Phone number
-            <input type="tel" name="phone" placeholder="10-digit mobile number" required>
-          </label>
-          <label>Which hernia is bothering you?
-            <select name="condition" required>
-              <option value="">Select a hernia type</option>
-              <option>Inguinal Hernia</option>
-              <option>Umbilical Hernia</option>
-              <option>Incisional Hernia</option>
-              <option>Hiatal Hernia</option>
-              <option>Femoral Hernia</option>
-              <option>Diastasis Recti</option>
-              <option>Recurrent Hernia</option>
-              <option>Something else / not sure</option>
-            </select>
-          </label>
-          <label>Preferred time
-            <select name="time">
-              <option>Choose a preference</option>
-              <option>Morning</option>
-              <option>Evening (6:00 – 7:00 PM)</option>
-              <option>Any time works</option>
-            </select>
-          </label>
-          <p class="form-fine">Let us know anything else you'd like us to know. Your details stay private and are used
-            only to arrange your consultation.</p>
-          <button type="submit" class="btn btn-teal btn-block">Request my consultation</button>
-        </form>
+      <div class="booking-card reveal" id="bookingCard">
+        <div id="bookingFormWrapper">
+          <h3>Request your slot</h3>
+          <p class="form-sub">Have less than a minute.</p>
+          <form id="bookingForm" novalidate>
+            <label>Full name
+              <input type="text" name="name" placeholder="Your name" required>
+            </label>
+            <label>Phone number
+              <input type="tel" name="phone" placeholder="10-digit mobile number" required>
+            </label>
+            <label>Which hernia is bothering you?
+              <select name="condition" required>
+                <option value="">Select a hernia type</option>
+                <option>Inguinal Hernia</option>
+                <option>Umbilical Hernia</option>
+                <option>Incisional Hernia</option>
+                <option>Hiatal Hernia</option>
+                <option>Femoral Hernia</option>
+                <option>Diastasis Recti</option>
+                <option>Recurrent Hernia</option>
+                <option>Something else / not sure</option>
+              </select>
+            </label>
+            <label>Preferred time
+              <select name="time">
+                <option>Choose a preference</option>
+                <option>Morning</option>
+                <option>Evening (6:00 – 7:00 PM)</option>
+                <option>Any time works</option>
+              </select>
+            </label>
+            <p class="form-fine">Let us know anything else you'd like us to know. Your details stay private and are used
+              only to arrange your consultation.</p>
+            <button type="submit" class="btn btn-teal btn-block">Request my consultation</button>
+          </form>
+        </div>
+
+        <div id="bookingSuccessWrapper" class="booking-success-container" hidden>
+          <div class="success-icon-wrapper">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="23" fill="none" />
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+          </div>
+          <h3 class="success-title">Thank You!</h3>
+          <p class="success-subtitle">Your consultation request has been received.</p>
+
+          <div class="success-details">
+            <div class="success-detail-item">
+              <span class="detail-label">Name</span>
+              <span class="detail-value" id="successName">-</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="detail-label">Phone</span>
+              <span class="detail-value" id="successPhone">-</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="detail-label">Condition</span>
+              <span class="detail-value" id="successCondition">-</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="detail-label">Preferred Time</span>
+              <span class="detail-value" id="successTime">Any time</span>
+            </div>
+          </div>
+
+          <p class="success-note">Dr. Preethi Mrinalini's clinic team will call you shortly to confirm your slot.</p>
+
+          <button type="button" class="btn btn-outline btn-block" id="resetFormBtn" style="margin-top: 18px;">Book
+            another slot</button>
+        </div>
+
         <div class="alt-actions">
           <a class="btn btn-outline btn-half" href="#" rel="noopener">💬 WhatsApp us</a>
           <a class="btn btn-outline btn-half" href="tel:+919884000171">📞 Call now</a>
@@ -625,7 +661,7 @@
 
   <script src="index.js"></script>
   <!-- CallNexAI Website Widget -->
-<!-- <script>
+  <!-- <script>
   window.CallNexAI = window.CallNexAI || {};
   window.CallNexAI.config = {
     agentId: "f2a75db1-36de-43f1-a90b-1aa13b24f24f",
@@ -636,7 +672,7 @@
   };
 </script>
 <script src="http://localhost:5000/widget/v1/widget.js" async defer></script> -->
-<!-- End CallNexAI Website Widget -->
+  <!-- End CallNexAI Website Widget -->
 
 
 </body>
