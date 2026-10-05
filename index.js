@@ -157,6 +157,17 @@ if (form) {
       }
     });
   }
+
+  document.querySelectorAll('a[href="#book"]').forEach(link => {
+    link.addEventListener('click', () => {
+      const formWrapper = document.getElementById('bookingFormWrapper');
+      const successWrapper = document.getElementById('bookingSuccessWrapper');
+      if (formWrapper && successWrapper && formWrapper.hidden) {
+        successWrapper.hidden = true;
+        formWrapper.hidden = false;
+      }
+    });
+  });
 }
 
 // ---------- Video topic buttons ----------
