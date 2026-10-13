@@ -85,14 +85,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyoTDalBB90Z0DwV
 
 const form = document.getElementById('bookingForm');
 if (form) {
-  const showSuccessUI = (name, phone, condition, time) => {
+  const showSuccessUI = () => {
     const formWrapper = document.getElementById('bookingFormWrapper');
     const successWrapper = document.getElementById('bookingSuccessWrapper');
-
-    document.getElementById('successName').textContent = name;
-    document.getElementById('successPhone').textContent = phone;
-    document.getElementById('successCondition').textContent = condition || 'Not specified';
-    document.getElementById('successTime').textContent = (time && time !== 'Choose a preference') ? time : 'Any time';
 
     if (formWrapper && successWrapper) {
       formWrapper.hidden = true;
@@ -129,7 +124,7 @@ if (form) {
     submitBtn.textContent = 'Sending...';
 
     // Show Thank You UI with tick animation immediately
-    showSuccessUI(name, phone, condition, time);
+    showSuccessUI();
     form.reset();
 
     fetch(SHEET_ENDPOINT, {
